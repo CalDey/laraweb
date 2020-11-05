@@ -17110,3 +17110,7 @@ body {
   padding: 3px;
 }
 
+.avatar {
+  border-radius: 50%;
+}
+
