@@ -11,8 +11,13 @@
       <img class="card-img-top" src="{{ $user->avatar }}" alt="{{ $user->name }}">
       <div class="card-body">
         <h5><strong>个人简介</strong></h5>
-        <p>{{ $user->introduction }}</p>
-        <hr>
+        {{-- <p>{{ $user->introduction }}</p>
+        <hr> --}}
+        @if(!$user->introduction)
+        <p>这个人很懒，什么也没有留下</p>
+        @else
+        <p>{{$user->introduction}}</p>
+        @endif
         <h5><strong>注册于</strong></h5>
         <p>{{ $user->created_at->diffForHumans() }}</p>
       </div>
