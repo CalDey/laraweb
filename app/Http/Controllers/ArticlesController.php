@@ -6,6 +6,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
+use App\Models\Category;
 
 class ArticlesController extends Controller
 {
@@ -14,16 +15,27 @@ class ArticlesController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-	public function index()
+	public function index(Request $request, Article $article)
 	{
         // $articles = Article::paginate(30);
-        $articles = Article::with('user','category')->paginate(30);
+        // $articles = Article::with('user','category')->paginate(30);
+
+        $articles = $article->withOrder($request->order)
+        ->with('user', 'category')  // 预加载防止 N+1 问题
+        ->paginate(20);
+
 		return view('articles.index', compact('articles'));
 	}
 
-    public function show(Article $article)
+    public function show(Category $category, Request $request, Article $article)
     {
-        return view('articles.show', compact('article'));
+        // 读取分类 ID 关联的话题，并按每 20 条分页
+        $articles = $article->withOrder($request->order)
+                        ->where('category_id', $category->id)
+                        ->with('user', 'category')   // 预加载防止 N+1 问题
+                        ->paginate(20);
+
+        return view('articles.index', compact('articles', 'category'));
     }
 
 	public function create(Article $article)

@@ -11,7 +11,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Left Side Of Navbar -->
       <ul class="navbar-nav mr-auto">
-
+        <li class="nav-item {{ active_class(if_route('articles.index')) }}"><a class="nav-link" href="{{ route('articles.index') }}">文章列表</a></li>
+        <li class="nav-item {{ category_nav_active(1) }}"><a class="nav-link" href="{{ route('categories.show', 1) }}">热点新闻</a></li>
+        <li class="nav-item {{ category_nav_active(2) }}"><a class="nav-link" href="{{ route('categories.show', 2) }}">网事杂谈</a></li>
+        <li class="nav-item {{ category_nav_active(3) }}"><a class="nav-link" href="{{ route('categories.show', 3) }}">文娱剧场</a></li>
+        <li class="nav-item {{ category_nav_active(4) }}"><a class="nav-link" href="{{ route('categories.show', 4) }}">PC数码</a></li>
+        <li class="nav-item {{ category_nav_active(5) }}"><a class="nav-link" href="{{ route('categories.show', 5) }}">绿荫赛场</a></li>
       </ul>
 
       <!-- Right Side Of Navbar -->
