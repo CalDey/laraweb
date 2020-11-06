@@ -69,7 +69,7 @@ class ArticlesController extends Controller
 		$this->authorize('destroy', $article);
 		$article->delete();
 
-		return redirect()->route('articles.index')->with('message', 'Deleted successfully.');
+		return redirect()->route('articles.index')->with('success', '成功删除！');
     }
 
     public function uploadImage(Request $request, ImageUploadHandler $uploader)
