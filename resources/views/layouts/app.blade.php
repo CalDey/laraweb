@@ -11,7 +11,8 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>@yield('title', '易新闻') - 一个简易的新闻发布平台</title>
+  <title>@yield('title', '易新闻') - 易新闻，一个简易的新闻发布平台</title>
+  <meta name="description" content="@yield('description', '易新闻')" />
 
   <!-- Styles -->
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
