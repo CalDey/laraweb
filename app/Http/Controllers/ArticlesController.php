@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Models\Category;
+use Auth;
 
 class ArticlesController extends Controller
 {
@@ -27,26 +28,24 @@ class ArticlesController extends Controller
 		return view('articles.index', compact('articles'));
 	}
 
-    public function show(Category $category, Request $request, Article $article)
+    public function show(Article $article)
     {
-        // 读取分类 ID 关联的话题，并按每 20 条分页
-        $articles = $article->withOrder($request->order)
-                        ->where('category_id', $category->id)
-                        ->with('user', 'category')   // 预加载防止 N+1 问题
-                        ->paginate(20);
-
-        return view('articles.index', compact('articles', 'category'));
+        return view('articles.show', compact('article'));
     }
 
 	public function create(Article $article)
 	{
-		return view('articles.create_and_edit', compact('article'));
+        $categories = Category::all();
+		return view('articles.create_and_edit', compact('article','categories'));
 	}
 
-	public function store(ArticleRequest $request)
+	public function store(ArticleRequest $request, Article $article)
 	{
-		$article = Article::create($request->all());
-		return redirect()->route('articles.show', $article->id)->with('message', 'Created successfully.');
+        $article->fill($request->all());
+        $article->user_id = Auth::id();
+        $article->save();
+
+		return redirect()->route('articles.show', $article->id)->with('success', '文章发表成功！');
 	}
 
 	public function edit(Article $article)

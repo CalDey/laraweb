@@ -2,9 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Article;
+
+// creating, created, updating, updated, saving,
+// saved,  deleting, deleted, restoring, restored
+
+class ArticleObserver
+{
+    public function saving(Article $article)
+    {
+        $article->excerpt = make_excerpt($article->body);
+    }
+}
+
 class Article extends Model
 {
-    protected $fillable = ['title', 'body', 'user_id', 'category_id', 'reply_count', 'view_count', 'last_reply_user_id', 'order', 'excerpt', 'slug'];
+    // protected $fillable = ['title', 'body', 'user_id', 'category_id', 'reply_count', 'view_count', 'last_reply_user_id', 'order', 'excerpt', 'slug'];
+
+    protected $fillable = [
+        'title','body','category_id','excerpt','slug'
+    ];
 
     public function category()
     {
