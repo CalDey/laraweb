@@ -12,11 +12,13 @@ class ReplyObserver
 {
     public function created(Reply $reply)
     {
-        $reply->article->reply_count = $reply->article->replies->count();
-        $reply->article->save();
+        // 命令行运行迁移时不做这些操作！
+        if ( ! app()->runningInConsole()) {
+            $reply->article->updateReplyCount();
 
-        // 通知话题作者有新的评论
-        $reply->article->user->notify(new ArticleReplied($reply));
+            // 通知话题作者有新的评论
+            $reply->article->user->notify(new ArticleReplied($reply));
+        }
     }
 
     public function updating(Reply $reply)
@@ -27,6 +29,11 @@ class ReplyObserver
     public function creating(Reply $reply)
     {
         $reply->content = clean($reply->content, 'user_topic_body');
+    }
+
+    public function deleted(Reply $reply)
+    {
+        $reply->article->updateReplyCount();
     }
 
 }
